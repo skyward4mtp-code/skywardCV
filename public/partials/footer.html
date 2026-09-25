@@ -1,0 +1,21 @@
+<footer class="mt-14 border-t border-white/10">
+  <div class="mx-auto max-w-6xl px-4 py-10 text-sm text-white/60">
+    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div>
+        <div class="font-semibold text-white/80">SKYWARD</div>
+        <div>Quỹ Support & các dự án cộng đồng cho Sơn Tùng M-TP.</div>
+      </div>
+      <div class="flex items-center gap-2">
+        <a href="index.html" class="px-3 py-1.5 rounded-full border border-white/10 hover:border-white/20 hover:text-white">Trang chính</a>
+        <a href="index.html#donate" class="px-3 py-1.5 rounded-full border border-white/10 hover:border-white/20 hover:text-white">Ủng hộ</a>
+      </div>
+    </div>
+    <div class="mt-6 text-xs text-white/40">© <span id="y"></span> SKYWARD. All rights reserved.</div>
+  </div>
+  <script>
+    (function(){
+      var el = document.getElementById('y');
+      if (el) el.textContent = new Date().getFullYear();
+    })();
+  </script>
+</footer>
