@@ -1,0 +1,78 @@
+/* ===== Skyward Pro Base ===== */
+:root{
+  --bg:#0a0f18;
+  --text: rgba(230,236,245,.92);
+  --muted: rgba(230,236,245,.68);
+  --border: rgba(255,255,255,.10);
+  --card: rgba(255,255,255,.045);
+  --shadow: 0 18px 60px rgba(0,0,0,.45);
+  --radius: 18px;
+}
+
+html{ scroll-behavior:smooth; }
+/* Keep project artwork and captions fully visible in existing image frames. */
+img{max-width:100%;object-fit:contain !important;}
+
+body{
+  background: radial-gradient(1200px 700px at 20% -10%, rgba(59,130,246,.18), transparent 55%),
+              radial-gradient(900px 600px at 90% 10%, rgba(34,197,94,.08), transparent 55%),
+              radial-gradient(900px 650px at 60% 110%, rgba(168,85,247,.08), transparent 60%),
+              var(--bg);
+  color: var(--text);
+}
+
+/* glass card */
+.glass{
+  background: var(--card);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(14px);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+/* chips */
+.chip{
+  display:inline-flex;
+  align-items:center;
+  gap:.5rem;
+  padding:.45rem .8rem;
+  border-radius:999px;
+  background: rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.12);
+  color: rgba(230,236,245,.82);
+  font-size: .80rem;
+  transition: transform .18s ease, border-color .18s ease, background .18s ease;
+}
+.chip:hover{
+  transform: translateY(-1px);
+  background: rgba(255,255,255,.07);
+  border-color: rgba(255,255,255,.18);
+}
+
+/* dividers */
+.divider{ border-color: rgba(255,255,255,0.12); }
+.soft-divider{
+  height:1px;
+  margin: 0 auto;
+  max-width: 1200px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.12), transparent);
+}
+
+/* smooth reveal */
+.reveal{
+  opacity:0;
+  transform: translateY(10px);
+  filter: blur(6px);
+  transition: opacity .55s ease, transform .55s ease, filter .55s ease;
+  will-change: opacity, transform, filter;
+}
+.reveal.is-in{
+  opacity:1;
+  transform:none;
+  filter:none;
+}
+
+@media (prefers-reduced-motion: reduce){
+  html { scroll-behavior:auto; }
+  .reveal{ opacity:1; transform:none; filter:none; transition:none; }
+}
