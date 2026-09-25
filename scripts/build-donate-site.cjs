@@ -1,0 +1,12 @@
+const fs = require('node:fs');
+const path = require('node:path');
+const root = path.join(__dirname, '..');
+const out = path.join(root, 'tracker-site');
+const core = fs.readFileSync(path.join(root,'donate-tracker.cjs'),'utf8').replace('module.exports = { collectDonations, createTracker, transactionTime };','');
+const html = fs.readFileSync(path.join(root,'public/donate-tracker.html'),'utf8').replace('<link rel="stylesheet" href="/assets/css/donate-tracker.css">', '<style>' + fs.readFileSync(path.join(root,'public/assets/css/donate-tracker.css'),'utf8') + '</style>');
+const js = fs.readFileSync(path.join(root,'public/assets/js/donate-tracker.js'),'utf8');
+const worker = `${core}\nconst html = ${JSON.stringify(html)};\nconst script = ${JSON.stringify(js)};\nconst getDonations = createTracker(async cursor => { const url = new URL('https://gw.cake.vn/public/user-group-account/statement'); url.searchParams.set('encoded_id','318535339'); url.searchParams.set('next_page',cursor); const r = await fetch(url, {signal:AbortSignal.timeout(15000)}); if(!r.ok) throw new Error('Cake unavailable'); return r.json(); });\nexport default { async fetch(request) { const pathname = new URL(request.url).pathname; if(pathname === '/api/donate-progress') {try {return Response.json(await getDonations(),{headers:{'Cache-Control':'no-store'}});} catch {return Response.json({error:'Chưa thể cập nhật Cake'},{status:502});}} if(pathname === '/assets/js/donate-tracker.js') return new Response(script,{headers:{'Content-Type':'application/javascript; charset=utf-8'}}); if(pathname === '/' || pathname === '/donate-tracker.html') return new Response(html,{headers:{'Content-Type':'text/html; charset=utf-8'}}); return new Response('Not found',{status:404}); }};\n`;
+fs.mkdirSync(path.join(out,'dist/server'),{recursive:true});
+fs.writeFileSync(path.join(out,'dist/server/index.js'),worker);
+fs.writeFileSync(path.join(out,'package.json'),JSON.stringify({private:true,type:'module'},null,2));
+console.log('Built standalone donate tracker Worker');
